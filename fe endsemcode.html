@@ -1,0 +1,38 @@
+<input id="note" placeholder="Write note">
+<button onclick="add()">Add</button>
+<ul id="list"></ul>
+
+<script>
+let notes = JSON.parse(localStorage.getItem("notes")) || [];
+let note = document.getElementById('note');
+let list = document.getElementById('list');
+
+function show() {
+  list.innerHTML = "";
+  notes.forEach((n, i) =>
+    list.innerHTML += `<li>${n}
+      <button onclick="edit(${i})">Edit</button>
+      <button onclick="del(${i})">X</button></li>`
+  );
+}
+
+function add() {
+  notes.push(note.value);
+  localStorage.setItem("notes", JSON.stringify(notes));
+  note.value = "";
+  show();
+}
+
+function del(i) {
+  notes.splice(i, 1);
+  localStorage.setItem("notes", JSON.stringify(notes));
+  show();
+}
+
+function edit(i) {
+  note.value = notes[i];
+  del(i);
+}
+
+show();
+</script>
